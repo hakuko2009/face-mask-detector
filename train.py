@@ -26,7 +26,7 @@ model = Sequential([
 ])
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['acc'])
 
-TRAINING_DIR = "./train"
+TRAINING_DIR = "E:\\MNM\\face-mask-detector\\Dataset\\train"
 train_datagen = ImageDataGenerator(rescale=1.0 / 255,
                                    rotation_range=40,
                                    width_shift_range=0.2,
@@ -39,13 +39,13 @@ train_datagen = ImageDataGenerator(rescale=1.0 / 255,
 train_generator = train_datagen.flow_from_directory(TRAINING_DIR,
                                                     batch_size=10,
                                                     target_size=(150, 150))
-VALIDATION_DIR = "./test"
+VALIDATION_DIR = "E:\\MNM\\face-mask-detector\\Dataset\\test"
 validation_datagen = ImageDataGenerator(rescale=1.0 / 255)
 
 validation_generator = validation_datagen.flow_from_directory(VALIDATION_DIR,
                                                               batch_size=10,
                                                               target_size=(150, 150))
-checkpoint = ModelCheckpoint('model2-{epoch:03d}.model', monitor='val_loss', verbose=0, save_best_only=True,
+checkpoint = ModelCheckpoint('model2-{epoch:03d}.h5', monitor='val_loss', verbose=0, save_best_only=True,
                              mode='auto')
 
 history = model.fit_generator(train_generator,
