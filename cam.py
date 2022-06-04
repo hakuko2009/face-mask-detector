@@ -1,15 +1,15 @@
 import cv2
 import numpy as np
-from keras.models import load_model
-model=load_model("E:\\MNM\\face-mask-detector\\model2-001.h5")
-results={0:'without mask',1:'mask'}
-GR_dict={0:(0,0,255),1:(0,255,0)}
+from tensorflow.keras.models import load_model
+model = load_model("model2-001.h5")
+results = {0: 'without mask', 1: 'mask'}
+GR_dict = {0: (0, 0, 255), 1: (0, 255, 0)}
 rect_size = 4
 cap = cv2.VideoCapture(0) 
-haarcascade = cv2.CascadeClassifier('./haarcascade_frontalface_default.xml')
+haarcascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 while True:
     (rval, im) = cap.read()
-    im=cv2.flip(im,1,1) 
+    im = cv2.flip(im, 1, 1)
     
     rerect_size = cv2.resize(im, (im.shape[1] // rect_size, im.shape[0] // rect_size))
     faces = haarcascade.detectMultiScale(rerect_size)
@@ -23,7 +23,7 @@ while True:
         reshaped = np.vstack([reshaped])
         result=model.predict(reshaped)
         
-        label=np.argmax(result,axis=1)[0]
+        label=np.argmax(result, axis=1)[0]
       
         cv2.rectangle(im,(x,y),(x+w,y+h),GR_dict[label],2)
         cv2.rectangle(im,(x,y-40),(x+w,y),GR_dict[label],-1)
